@@ -10,6 +10,7 @@ import {
   createTRPCRouter,
   protectedProcedure,
 } from "~/server/api/trpc";
+import { TRPCError } from "@trpc/server";
 
 export const todoRouter = createTRPCRouter({
   all: protectedProcedure.query(async ({ctx}) => {
@@ -34,6 +35,7 @@ export const todoRouter = createTRPCRouter({
   }),
 
   create: protectedProcedure.input(todoInput).mutation(async ({ctx, input}) => {
+    //throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" }) tested error.
     return ctx.db.todo.create({
       data: {
         text: input,

@@ -12,6 +12,6 @@
 - [x] Login
 - [x] List Todos
 - [x] Create Todos
-- [] Toggle Todo
-- [] Delete Todo
-- [] Optimistic Updates
+- [x] Toggle Todo
+- [x] Delete Todo
+- [x] Optimistic Updates
