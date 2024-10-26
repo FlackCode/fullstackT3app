@@ -6,6 +6,13 @@ import { todoInput } from "~/types"
 export default function CreateTodo() {
     const [newTodo, setNewTodo] = useState('')
 
+    const trpc = api.useUtils()
+
+    const { mutate } = api.todo.create.useMutation({
+        onSettled: async () => {
+            await trpc.todo.all.invalidate()
+        }
+    })
     return (
 		<div>
 			<form className="flex gap-2" onSubmit={(e) => {
@@ -18,7 +25,7 @@ export default function CreateTodo() {
                     return
                 }
 
-                
+                mutate(newTodo)
             }}>
 				<input
 					className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-900 dark:border-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

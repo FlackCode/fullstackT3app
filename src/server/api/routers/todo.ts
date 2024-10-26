@@ -13,24 +13,24 @@ import {
 
 export const todoRouter = createTRPCRouter({
   all: protectedProcedure.query(async ({ctx}) => {
-    // const todos = await ctx.db.todo.findMany({
-    //   where: {
-    //     userId: ctx.session.user.id,
-    //   }
-    // })
-    // return todos.map(({id, text, done}) => ({id, text, done}));
-    return [
-    {
-      id: 'fake',
-      text: 'fake text',
-      done: false
-    },
-    {
-      id: 'fake2',
-      text: 'fake text 2',
-      done: true
-    }
-  ]
+    const todos = await ctx.db.todo.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      }
+    })
+    return todos.map(({id, text, done}) => ({id, text, done}));
+  //   return [
+  //   {
+  //     id: 'fake',
+  //     text: 'fake text',
+  //     done: false
+  //   },
+  //   {
+  //     id: 'fake2',
+  //     text: 'fake text 2',
+  //     done: true
+  //   }
+  // ]
   }),
 
   create: protectedProcedure.input(todoInput).mutation(async ({ctx, input}) => {
