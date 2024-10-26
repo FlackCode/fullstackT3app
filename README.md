@@ -9,7 +9,7 @@
 - [x] Create TRPC Router for Todos
 
 ### Frontend
-- [] Login
+- [x] Login
 - [] List Todos
 - [] Create Todos
 - [] Toggle Todo
