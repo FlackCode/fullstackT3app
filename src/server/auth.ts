@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import {
   getServerSession,
@@ -5,7 +6,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
+import EmailProvider from "next-auth/providers/email";
 
 import { env } from "~/env";
 import { db } from "~/server/db";
@@ -48,10 +49,22 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
-    }),
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER || 'https://localhost:3000',
+        port: 587,
+        auth: {
+          user: 'apikey',
+          pass: process.env.EMAIL_PASSWORD || "",
+        }
+      },
+      from: process.env.EMAIL_FROM || 'default@default.com',
+      ...(process.env.NODE_ENV != 'production' ? {
+        sendVerificationRequest({url}) {
+          console.log("LOGIN LINK", url);
+        }
+      } : {})
+    })
     /**
      * ...add more providers here.
      *
